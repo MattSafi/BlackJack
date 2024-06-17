@@ -41,11 +41,6 @@ header {
 
 
 
-h3 {
-  color: aliceblue;
-  margin-bottom: 10px;
-}
-
 .hands {
   display: flex;
   position: relative;
@@ -140,23 +135,6 @@ h3 {
   border-radius: 8px;
   transition: .1s ease;
 }
-
-/* .instructions {
-  display: inline-block;
-  position: relative;
-  top: 2vh;
-  left: 20vw;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 10px;
-  font-size: 1.5rem;
-  padding: 2px;
-  border: 5px double aliceblue;
-  border-radius: 8px;
-  width: 220px;
-  max-height: 100px;
-} */
 
 .actions-result {
   display: flex;
@@ -298,6 +276,20 @@ footer {
     text-align: center;
     border: 3px double aliceblue;
   }
+  h4 {
+    display: flex;
+    font-size: 1rem;
+    font-weight: 600;
+    color: aliceblue;
+    max-width: 200px;
+    text-align: center;
+    border: 2px solid aliceblue;
+    border-radius: 8px;
+    padding: 5px;
+    background-image: radial-gradient(
+    rgba(29, 126, 83, 0.8), rgba(12, 68, 41, 0.8)
+  );
+  }
   .hands {
     display: flex;
     position: fixed;
@@ -369,13 +361,13 @@ footer {
     border: 2px solid #232323;
     left: 1vw;
   }
-  .hitStandBtn:hover, .newGameBtn:hover {
-    background-color: rgb(181, 188, 195);
-  }
+ 
   .result {
     display: flex;
     position: fixed;
-    background-image: linear-gradient(45deg, rgba(4, 0, 255, 0.7), rgba(255, 0, 0, 0.7));
+    background-image: radial-gradient(
+    rgba(29, 126, 83, 0.8), rgba(12, 68, 41, 0.8)
+  );
     color: aliceblue;
     left: 70vw;
     top: 20vh;
@@ -383,9 +375,42 @@ footer {
     font-size: 1rem;
     gap: 10px;
     max-width: 80px;
-    padding: 8px;
+    
     margin: 0;
     z-index: 1;
+  }
+  .result.dealer-result {
+    display: flex;
+    position: fixed;
+    left: 72vw;
+    flex-direction: column;
+    font-size: 1rem;
+    gap: 10px;
+    padding: 10px;
+    max-width: 80px;
+    margin: 0;
+  }
+  .result.player-result {
+    display: flex;
+    position: fixed;
+    left: 70vw;
+    top: 55vh;
+    flex-direction: column;
+    font-size: 1rem;
+    gap: 10px;
+    max-width: 80px;
+    margin: 0;
+  }
+  .result.tied-result {
+    display: flex;
+    position: fixed;
+    left: 70vw;
+    top: 55vh;
+    flex-direction: column;
+    font-size: 1rem;
+    gap: 10px;
+    max-width: 80px;
+    margin: 0;
   }
   .newGame {
     display: flex;
@@ -410,7 +435,9 @@ footer {
     max-height: 300px;
     max-width: 80px;
     border: 3px double aliceblue;
-    background-image: linear-gradient(45deg, rgba(4, 0, 255, 0.625), rgba(255, 0, 0, 0.625));
+    background-image: radial-gradient(
+    rgba(29, 126, 83, 0.8), rgba(12, 68, 41, 0.8)
+  );
     z-index: 1;
   }
   .token {
@@ -466,12 +493,13 @@ footer {
     font-size: 1rem;
     font-weight: 600;
     border: 5px double aliceblue;
-    background-image: linear-gradient(45deg, rgba(4, 0, 255, 0.625), rgba(255, 0, 0, 0.625));
+    background-image: radial-gradient(
+    rgba(29, 126, 83, 0.8), rgba(12, 68, 41, 0.8));
     padding: 5px;
     border-radius: 8px;
     max-width: 90px;
-    bottom: 25vh;
-    right: 65vw;
+    bottom: 18vh;
+    right: 60vw;
   }
   footer {
     display: inline-flex;
