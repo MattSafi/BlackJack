@@ -1,6 +1,7 @@
 <template>
-  <header><h1>Blackjack</h1></header>
+  
   <div class="game-board">
+    
     <div class="hands">
       <div class="hand">
         <!-- <h3>Dealer</h3> -->
@@ -44,19 +45,23 @@
       </div>
       <div v-if="gameOver" class="result">{{ resultMessage }}</div>
     </div>
-    <div class="instructions">
+    <!-- <div class="instructions">
       <p>Place your bet <br>to play</p>
-    </div>
+    </div> -->
     <div class="betting">
       <div>Tokens: {{ tokens }}</div> 
-      <Button @click="placeBet(0)" :disabled="0 > tokens || betPlaced" class="tokenNoBet">No Bet</Button>
-      <Button @click="placeBet(10)" :disabled="10 > tokens || betPlaced" class="token">10</Button>
-      <Button @click="placeBet(25)" :disabled="25 > tokens || betPlaced" class="token">25</Button>
-      <Button @click="placeBet(50)" :disabled="50 > tokens || betPlaced" class="token">50</Button>
-      <Button @click="placeBet(100)" :disabled="100 > tokens || betPlaced" class="token">100</Button>
+      <Button @click="placeBet(0)" :disabled="0 > tokens || betPlaced || gameOver" class="tokenNoBet">No Bet</Button>
+      <Button @click="placeBet(25)" :disabled="25 > tokens || betPlaced || gameOver" class="token">25</Button>
+      <Button @click="placeBet(50)" :disabled="50 > tokens || betPlaced || gameOver" class="token">50</Button>
+      <Button @click="placeBet(100)" :disabled="100 > tokens || betPlaced || gameOver" class="token">100</Button>
+      <Button @click="placeBet(150)" :disabled="150 > tokens || betPlaced || gameOver" class="token">150</Button>
       
     </div>
+    <div class="current-bet">Current Bet: {{ currentBet }} </div>
   </div>
+  <footer>
+    <em>a game by mattsafi</em>
+</footer>
 </template>
 
 <script>
@@ -97,7 +102,7 @@ export default {
       tokens: 1000,
       currentBet: 0,
       betPlaced: false,
-      
+     
     };
   },
   computed: {
@@ -171,7 +176,7 @@ export default {
       const playerValue = this.calculateHandValue(this.playerHand);
 
       if (playerValue > 21) {
-        this.endGame('Player busts! Dealer wins.');
+        this.endGame('Dealer wins.');
       } else if (playerValue === 21) {
         // Automatically stand if player hits 21
         this.handleStand();
@@ -189,11 +194,12 @@ export default {
       this.determineWinner();
     },
     placeBet(amount) {
-      if (amount <= this.tokens && !this.betPlaced) {
+      if (amount <= this.tokens && !this.betPlaced && !this.gameOver) {
         this.tokens -= amount;
         this.currentBet = amount;
         this.betPlaced = true;
         console.log(`Bet placed: ${amount} tokens`);
+        this.checkTokens();
       }
     },
     calculateHandValue(hand) {
@@ -233,7 +239,14 @@ export default {
       }
       this.betPlaced = false;
       this.currentBet = 0; // Reset current bet
+      this.checkTokens();
     },
+    checkTokens() {
+      if (this.tokens <= 0) {
+        alert('You have run out of tokens! Refresh the page to play again.');
+      }
+    },
+
     checkGameOver() {
       if (this.calculateHandValue(this.playerHand) > 21) {
         this.endGame('Player busts! Dealer wins.');
