@@ -7,7 +7,7 @@
 body {
   display: flex;
   background-color: #232323;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   place-items: center;
 }
@@ -36,6 +36,7 @@ header {
   font-size: 1.5rem;
   gap: 20px;
   width: 100vw;
+  height: max-content;
 }
 
 h3 {
@@ -48,6 +49,7 @@ h3 {
   flex-direction: column;
   gap: 30px;
   margin-left: 150px;
+  z-index: 1;
 }
 
 .hand {
@@ -77,10 +79,10 @@ h3 {
   padding: 20px;
   margin: 0px;
   margin-top: 10px;
-  max-height: 140px;
-  height: 140px;
-  max-width: 90px;
-  width: 90px;
+  max-height: 160px;
+  height: 160px;
+  max-width: 110px;
+  width: 110px;
   background-color: aliceblue;
   color: black;
 }
@@ -91,23 +93,60 @@ h3 {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  font-size: 2rem;
+  border: 8px double aliceblue;
+  border-radius: 10px;
+  padding: 15px;
   
 }
 
 .token {
   display: flex;
   font-weight: 600;
+  font-size: 1.6rem;
   background-color: #8eff51;
   border-radius: 50%;
   padding: 8px;
-  border: 5px dotted black;
+  height: 70px;
+  width: 70px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border: 6px dotted black;
   transition: .1s ease;
 }
 
-.token:hover {
+.token:hover, .tokenNoBet:hover {
   background-color: #62c22f;
   cursor: pointer;
   transform: scale(1.05);
+}
+
+.tokenNoBet {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 1.4rem;
+  max-width: 70px;
+  background-color: #8eff51;
+  transition: .1s ease;
+}
+
+.instructions {
+  display: inline-block;
+  position: relative;
+  bottom: 265px;
+  left: 16vw;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  padding: 2px;
+  border: 5px double aliceblue;
+  border-radius: 8px;
+  width: 220px;
+  max-height: 100px;
 }
 
 .actions-result {
@@ -130,18 +169,23 @@ h3 {
 
 .result { 
   display: flex;
+  position: fixed;
+  max-width: 250px;
+  left: 70px;
+  top: 240px;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-image: radial-gradient(
-    #8eff51, #1d7e53);
-  color: #232323;
+  background-image: radial-gradient(#2baa145d,
+    #0000004e);
+  color: aliceblue;
   font-size: 2rem;
   font-weight: 600;
   text-decoration: underline;
   border: 5px double aliceblue;
   padding: 20px;
   border-radius: 10px;
+  z-index: 1;
 }
 
 .hand-value {
@@ -160,7 +204,8 @@ h3 {
   align-items: center;
   justify-content: center;
   margin: 5px;
-  font-size: 16px;
+  font-size: 1.5rem;
+  width: 100px;
   border: 5px double aliceblue;
   border-radius: 10px;
   background-color: aliceblue;
@@ -170,8 +215,8 @@ h3 {
   cursor: pointer;
 }
 
-.hitStandBtn:hover {
-  background-color: rgb(181, 188, 195);
+.disabledBtn {
+  background-color: rgb(84, 80, 80); /* Color when bet is not placed */
 }
 
 .newGameBtn {
@@ -179,7 +224,8 @@ h3 {
   align-items: center;
   justify-content: center;
   margin: 5px;
-  font-size: 16px;
+  margin-top: 15px;
+  font-size: 1.4rem;
   border: 5px double aliceblue;
   border-radius: 10px;
   background-color: aliceblue;
@@ -205,62 +251,133 @@ h3 {
   }
   .hands {
     display: flex;
+    position: fixed;
+    left: 0;
+    right: 210px;
+    gap: 0;
   }
   .hand {
     display: flex;
     font-size: 0.7rem;
     margin-left: 0px;
+    margin-top: 10px;
+    gap: 0;
   }
   .hand-value {
     display: flex;
-    font-size: 0.7rem;
+    font-size: 1rem;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
   }
   .cards-container {
     display: flex;
   }
   .cards {
     display: flex;
-    width: 45px;
-    height: 70px;
+    width: 60px;
+    height: 90px;
     justify-content: center;
     align-items: center;
     text-align: center;
   }
   .actions-result {
     display: flex;
+    position: fixed;
+    right: 30px;
     flex-direction: column;
     font-size: 0.8rem;
+    
   }
   .actions {
     display: flex;
+    position: fixed;
+    flex-direction: column;
     font-size: 0.5rem;
-    gap: 1px;
-    
+    gap: 10px;
+    left: 8vw;
   }
   .hitStandBtn, .newGameBtn {
-    font-size: 0.6rem;
+    display: flex;
+    font-size: 0.8rem;
     padding: 3px;
     margin: 0px;
     gap: 10px;
+    width: 50px;
+    height: 50px;
+    font-weight: 600;
   }
   .result {
-    font-size: 0.9rem;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    display: flex;
+    position: fixed;
+    left: 10vw;
+    top: 33vh;
+    flex-direction: column;
+    font-size: 0.7rem;
+    gap: 10px;
+    max-width: 50px;
+    padding: 5px;
+    margin: 0;
+  }
+  .newGame {
+    display: flex;
+    position: fixed;
+    left: 10vw;
+    flex-direction: column;
+    font-size: 0.5rem;
+    gap: 10px;
+    max-width: 50px;
     padding: 5px;
     margin: 0;
   }
   .betting {
     display: flex;
+    position: fixed;
+    left: 215px;
     flex-direction: column;
-    position: relative;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    padding: 5px;
     margin-right: 120px;
+    max-height: 300px;
+    max-width: 80px;
+    border: 3px double aliceblue;
+    z-index: 1;
   }
   .token {
-    display: flex;
+    display: grid;
+    position: static;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 0.9rem;
+    max-height: 40px;
+    max-width: 40px;
+    border: 3px dotted black;
+  }
+  .tokenNoBet {
+    display: grid;
+    position: static;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 0.9rem;
+    max-height: 50px;
+    max-width: 80px;
+  }
+  .instructions {
+    display: inline-block;
     position: relative;
-    font-size: 0.6rem;
+    bottom: 38vh;
+    left: 35vw;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    padding: 3px;
+    max-width: 60px;
+    border: 5px double aliceblue;
+    border-radius: 8px;
+    color: aliceblue;
   }
 }

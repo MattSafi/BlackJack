@@ -3,40 +3,57 @@
   <div class="game-board">
     <div class="hands">
       <div class="hand">
-        <h3>Dealer</h3>
+        <!-- <h3>Dealer</h3> -->
         <div class="cards-container">
           <div v-for="(card, index) in dealerHand" :key="index" class="card">
             <span class="cards">{{ card.rank }} {{ card.suit }}</span>
           </div>
         </div>
-        <div class="hand-value">Dealer Count: {{ dealerHandValue }}</div>
+        <div class="hand-value">Dealer: {{ dealerHandValue }}</div>
       </div>
       <div class="hand">
-        <h3>Player</h3>
+        <!-- <h3>Player</h3> -->
         <div class="cards-container">
           <div v-for="(card, index) in playerHand" :key="index" class="card">
             <span class="cards">{{ card.rank }} {{ card.suit }}</span>
           </div>
         </div>
-        <div class="hand-value">Player Count: {{ playerHandValue }}</div>
+        <div class="hand-value">Player: {{ playerHandValue }}</div>
       </div>
     </div>
 
     
 
     <div class="actions-result">
-      <div class="actions">
-        <Button @click="handleHit" :disabled="gameOver || !betPlaced" class="hitStandBtn">Hit</Button>
-        <Button @click="handleStand" :disabled="gameOver || !betPlaced" class="hitStandBtn">Stand</Button>
-        <br><Button @click="startNewGame" class="newGameBtn">New Game</Button>
+      <div class="actions" v-if="betPlaced">
+        <Button
+          @click="handleHit"
+          :disabled="gameOver || !betPlaced"
+          :class="{ 'hitStandBtn': true, 'disabledBtn': !betPlaced }"
+          class="hitStandBtn" >
+          Hit</Button>
+          <Button
+          @click="handleStand"
+          :disabled="gameOver || !betPlaced"
+          :class="{ 'hitStandBtn': true, 'disabledBtn': !betPlaced }"
+          class="hitStandBtn" >
+          Stand</Button>
+      </div>
+      <div class="newGame" v-if="gameOver">
+        <Button @click="startNewGame" class="newGameBtn">New Game</Button>
       </div>
       <div v-if="gameOver" class="result">{{ resultMessage }}</div>
     </div>
+    <div class="instructions">
+      <p>Place your bet <br>to play</p>
+    </div>
     <div class="betting">
       <div>Tokens: {{ tokens }}</div> 
+      <Button @click="placeBet(0)" :disabled="0 > tokens || betPlaced" class="tokenNoBet">No Bet</Button>
       <Button @click="placeBet(10)" :disabled="10 > tokens || betPlaced" class="token">10</Button>
       <Button @click="placeBet(25)" :disabled="25 > tokens || betPlaced" class="token">25</Button>
       <Button @click="placeBet(50)" :disabled="50 > tokens || betPlaced" class="token">50</Button>
+      <Button @click="placeBet(100)" :disabled="100 > tokens || betPlaced" class="token">100</Button>
       
     </div>
   </div>
@@ -80,6 +97,7 @@ export default {
       tokens: 1000,
       currentBet: 0,
       betPlaced: false,
+      
     };
   },
   computed: {
@@ -129,7 +147,7 @@ export default {
       console.log('Dealing initial cards');
       this.dealCard(this.playerHand);
       this.dealCard(this.playerHand);
-      this.dealCard(this.dealerHand);
+      // this.dealCard(this.dealerHand);
       this.dealCard(this.dealerHand);
     },
     dealCard(hand) {
@@ -141,7 +159,6 @@ export default {
       if (!this.canHit || !this.betPlaced) return;
       this.canHit = false;
       setTimeout(() => this.canHit = true, 200);  // Cool-down period in milliseconds
-
       console.log('Hit button clicked');
       if (this.gameOver) {
         return;
