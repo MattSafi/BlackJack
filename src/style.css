@@ -254,14 +254,14 @@ h3 {
     position: fixed;
     left: 0;
     right: 210px;
-    gap: 0;
+    gap: 20px;
   }
   .hand {
     display: flex;
     font-size: 0.7rem;
     margin-left: 0px;
     margin-top: 10px;
-    gap: 0;
+    gap: 10px;
   }
   .hand-value {
     display: flex;
@@ -275,8 +275,8 @@ h3 {
   }
   .cards {
     display: flex;
-    width: 60px;
-    height: 90px;
+    width: 50px;
+    height: 80px;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -310,14 +310,17 @@ h3 {
   .result {
     display: flex;
     position: fixed;
+    background-image: radial-gradient(#26ff005d, #ffffff86);
+    color: #232323;
     left: 10vw;
     top: 33vh;
     flex-direction: column;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     gap: 10px;
     max-width: 50px;
     padding: 5px;
     margin: 0;
+    z-index: 1;
   }
   .newGame {
     display: flex;
@@ -333,7 +336,7 @@ h3 {
   .betting {
     display: flex;
     position: fixed;
-    left: 215px;
+    left: 240px;
     flex-direction: column;
     font-size: 1rem;
     padding: 5px;
@@ -365,10 +368,10 @@ h3 {
     max-width: 80px;
   }
   .instructions {
-    display: inline-block;
+    display: flex;
     position: relative;
-    bottom: 38vh;
-    left: 35vw;
+    bottom: 180px;
+    left: 120px;
     align-items: center;
     justify-content: center;
     text-align: center;
