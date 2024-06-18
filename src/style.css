@@ -419,8 +419,9 @@ box-shadow: 0px 0px 10px 0px #E4A700;
     position: relative;
     flex-direction: column;
     font-size: 0.8rem;
-    top: 0;
+    
     left: 8vw;
+    bottom: 6vh;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -459,6 +460,7 @@ box-shadow: 0px 0px 10px 0px #E4A700;
   }
   .cards-container {
     display: flex;
+  
   }
   .cards {
     display: flex;
@@ -507,8 +509,8 @@ box-shadow: 0px 0px 10px 0px #E4A700;
     flex-direction: row;
     font-size: 0.5rem;
     gap: 10px;
-    top: 42.5vh;
-    right: 42vw;
+    top: 40vh;
+    right: 40vw;
     
   }
   .hitBtn {
@@ -557,38 +559,7 @@ box-shadow: 0px 0px 10px 0px #E4A700;
     text-align: center;
     z-index: 1;
   }
-  /* .result.dealer-result {
-    display: flex;
-    position: fixed;
-    
-    flex-direction: column;
-    font-size: 1rem;
-    gap: 10px;
-    padding: 10px;
-    max-width: 80px;
-    margin: 0;
-  }
-  .result.player-result {
-    display: flex;
-    position: fixed;
-    
-    
-    flex-direction: column;
-    font-size: 1rem;
-    gap: 10px;
-    max-width: 80px;
-    margin: 0;
-  }
-  .result.tied-result {
-    display: flex;
-    position: fixed;
-    
-    flex-direction: column;
-    font-size: 1rem;
-    gap: 10px;
-    max-width: 80px;
-    margin: 0;
-  } */
+  
   .newGame {
     display: flex;
     position: fixed;
@@ -619,7 +590,7 @@ box-shadow: 0px 0px 10px 0px #E4A700;
     position: fixed;
     right: 0;
     left: 35vw;
-    
+    top: 2vh;
     flex-direction: column;
     font-size: 1rem;
     font-weight: 600;
@@ -632,11 +603,12 @@ box-shadow: 0px 0px 10px 0px #E4A700;
     z-index: 1;
   }
   .tokenButtons {
-    width: 50px;
+    width: 55px;
     right: 20px;
+    padding: 10px;
   }
   .placeABet {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
   }
   .token {
     display: grid;
