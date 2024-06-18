@@ -3,68 +3,96 @@
   <div class="game-board">
     
     <div class="hands">
-      <h4 v-if="!betPlaced && !gameOver">Place A Bet To Start Playing!</h4>
-      <div class="hand">
+      <div class="handDealer">
         
         <div class="cards-container">
           <div v-for="(card, index) in dealerHand" :key="index" class="card">
             <span class="cards">{{ card.rank }} {{ card.suit }}</span>
+            
           </div>
+          
         </div>
-        <div class="hand-value">Dealer: {{ dealerHandValue }}</div>
-        <div v-if="gameOver && resultMessage.includes('Dealer wins!')" 
-        class="result dealer-result">{{ resultMessage }}</div>
-      </div>
-      <div class="hand">
+        <span class="hand-value">Dealer: {{ dealerHandValue }}</span>
         
-        <div class="cards-container">
-          <div v-for="(card, index) in playerHand" :key="index" class="card">
-            <span class="cards">{{ card.rank }} {{ card.suit }}</span>
-          </div>
-        </div>
-        <div class="hand-value">Player: {{ playerHandValue }}</div>
-        <div v-if="gameOver && resultMessage.includes('You Win!')" 
-        class="result player-result">{{ resultMessage }}</div>
+        
       </div>
-    </div>
-
-    <div v-if="gameOver && resultMessage.includes('It\'s a tie!')" 
-        class="result tied-result">{{ resultMessage }}</div>
-    
-
+      </div>
+      <!-- Hit and Stand Buttons -->
     <div class="actions-result">
       <div class="actions" v-if="betPlaced">
         <Button
           @click="handleHit"
           :disabled="gameOver || !betPlaced"
           
-          class="hitStandBtn" >
+          class="hitBtn" >
           Hit</Button>
           <Button
           @click="handleStand"
           :disabled="gameOver || !betPlaced"
           
-          class="hitStandBtn" >
+          class="standBtn" >
           Stand</Button>
       </div>
-      <div class="newGame" v-if="gameOver">
-        <Button @click="startNewGame" class="newGameBtn">New Game</Button>
+    </div>
+      <div class="handPlayer">
+        <span class="hand-value" style="margin-bottom: 10px">Player: {{ playerHandValue }}</span>
+        <div class="cards-container">
+          
+          <div v-for="(card, index) in playerHand" :key="index" class="card">
+            <span class="cards" >{{ card.rank }} {{ card.suit }}</span>
+            
+          </div>
+          
+        </div>
+        
+        
       </div>
     </div>
+
+    
+    
+
     <div class="betting">
-      <div>Tokens: {{ tokens }}</div> 
-      <Button @click="placeBet(0)" :disabled="0 > tokens || betPlaced || gameOver" class="tokenNoBet">No Bet</Button>
-      <Button @click="placeBet(50)" :disabled="50 > tokens || betPlaced || gameOver" class="token">50</Button>
-      <Button @click="placeBet(100)" :disabled="100 > tokens || betPlaced || gameOver" class="token">100</Button>
-      <Button @click="placeBet(150)" :disabled="150 > tokens || betPlaced || gameOver" class="token">150</Button>
-      <Button @click="placeBet(200)" :disabled="200 > tokens || betPlaced || gameOver" class="token">200</Button>
+      <div class="bettingText">Tokens: {{ tokens }} <br>
+        Current Bet: {{ currentBet }}
+      </div> 
+      <!-- <div class="current-bet">Current Bet: {{ currentBet }} </div> -->
       
     </div>
-    <div class="current-bet">Current Bet: {{ currentBet }} </div>
-  </div>
-  <footer>
-    <em>a game by mattsafi</em>
-</footer>
+
+    <!-- Tokens for betting -->
+    <div class="tokenButtons">
+      <span v-if="!betPlaced && !gameOver" class="placeABet">Place A Bet To Start Playing!</span>
+      <Button @click="placeBet(0)" :disabled="0 > tokens || betPlaced || gameOver" class="tokenNoBet">No Bet</Button>
+      <Button @click="placeBet(50)" :disabled="50 > tokens || betPlaced || gameOver" class="token btn1">50</Button>
+      <Button @click="placeBet(100)" :disabled="100 > tokens || betPlaced || gameOver" class="token btn2">100</Button>
+      <Button @click="placeBet(150)" :disabled="150 > tokens || betPlaced || gameOver" class="token btn3">150</Button>
+      <Button @click="placeBet(200)" :disabled="200 > tokens || betPlaced || gameOver" class="token btn4">200</Button>
+      <Button @click="placeBet(250)" :disabled="250 > tokens || betPlaced || gameOver" class="token btn5">250</Button>
+      <Button @click="placeBet(300)" :disabled="300 > tokens || betPlaced || gameOver" class="token btn6">300</Button>
+    </div>
+
+
+    <div class="resultContainer" v-if="gameOver">
+      <span v-if="gameOver && resultMessage.includes('Dealer wins!')" class="result dealer-result">
+        {{ resultMessage }}
+      </span>
+      <span v-if="gameOver && resultMessage.includes('You Win!')" class="result player-result">
+        {{ resultMessage }}
+      </span>
+      <span v-if="gameOver && resultMessage.includes('It\'s a tie!')" 
+        class="result tied-result">{{ resultMessage }}
+    </span>
+    <div class="newGame" v-if="gameOver">
+        <Button @click="startNewGame" class="newGameBtn">Play Again</Button>
+      </div>
+    </div>
+    
+    
+  
+  
+    
+
 </template>
 
 <script>
@@ -179,7 +207,7 @@ export default {
       const playerValue = this.calculateHandValue(this.playerHand);
 
       if (playerValue > 21) {
-        this.endGame('Dealer wins.');
+        this.endGame('Dealer wins!');
       } else if (playerValue === 21) {
         // Automatically stand if player hits 21
         this.handleStand();

@@ -2,13 +2,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: sans-serif;
 }
 body {
   display: flex;
-  background-color: #232323;
-  height: 100%;
-  width: 100vw;
+  background-color: #000000;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
   place-items: center;
 }
 
@@ -23,12 +25,12 @@ header {
 
 .game-board {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   color: aliceblue;
-  border: 15px double aliceblue;
-  border-radius: 10px;
+  border: 4px double brown;
+  border-radius: 15px;
   padding: 15px;
   background-image: radial-gradient(
     #1d7e53, #0c4429
@@ -36,7 +38,7 @@ header {
   font-size: 1.5rem;
   gap: 20px;
   width: 100vw;
-  height: 95vh;
+  height: 100vh;
 }
 
 
@@ -44,32 +46,51 @@ header {
 .hands {
   display: flex;
   position: relative;
+  flex-direction: column;
+  position: relative;
   margin-left: 0;
-  left: 5vw;
+  
   flex-direction: column;
   gap: 30px;
-  margin-left: 150px;
+  
   z-index: 1;
 }
 
-.hand {
+.handDealer {
   display: flex;
+  position: relative;
+  
   flex-direction: column;
   align-items: center;
   gap: 10px;
 }
 
-
-
-.cards-container {
+.handPlayer {
   display: flex;
-  
-  flex-direction: row;
+  position: relative;
+  left: 0;
+  flex-direction: column;
+  align-items: center;
   gap: 10px;
 }
 
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 0;
+  position: relative;
+  margin-left: 0;
+  left: 0vw;
+}
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
 .cards {
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -88,8 +109,32 @@ header {
 }
 
 .betting {
-  display: flex;
   position: fixed;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 5px 10px;
+  margin: 0px;
+  width: fit-content;
+  height: fit-content;
+  top: 8vh;
+  left: 37vw;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: 0px;
+  background: #000000;
+  border: 2px double #A46928;
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px 0px #00000040;
+  color: #E4A700;
+  box-shadow: 0px 0px 10px 0px #E4A700;
+
+
+  /* display: flex;
+  
   right: 60vw;
   top: 7vh;
   flex-direction: column;
@@ -99,28 +144,79 @@ header {
   font-size: 2rem;
   border: 8px double aliceblue;
   border-radius: 10px;
-  padding: 15px;
+  padding: 15px; */
   
 }
 
-.token {
+.betting text {
+  width: 148px;
+height: 39px;
+top: 34px;
+left: 44px;
+gap: 0px;
+opacity: 0px;
+font-family: Inter;
+font-size: 32px;
+font-weight: 400;
+line-height: 38.73px;
+text-align: left;
+background: #E4A700;
+box-shadow: 0px 0px 10px 0px #E4A700;
+
+}
+.tokenButtons {
   display: flex;
+  position: fixed;
+  flex-direction: column;
+  top: 12vh;
+  right: 15vw;
+  gap: 10px;
+  padding: 15px;
+  color: aliceblue;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1rem;
+  border: 2px double aliceblue;
+  border-radius: 12px;
+}
+.placeABet {
+  display: flex;
+  font-size: 1rem;
   font-weight: 600;
-  font-size: 1.6rem;
-  background-color: #8eff51;
-  border-radius: 50%;
-  padding: 8px;
-  height: 70px;
-  width: 70px;
   text-align: center;
   justify-content: center;
   align-items: center;
-  border: 6px dotted black;
+  color: aliceblue;
+}
+.token {
+  display: flex;
+  font-weight: 600;
+  font-size: auto;
+  border-radius: 50%;
+  padding: 8px;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border: 3px dotted aliceblue;
   transition: .1s ease;
 }
-
+.token.btn1, .token.btn2 {
+  background-color: #b2232f;
+  color: aliceblue;
+}
+.token.btn3, .token.btn4 {
+  background-color: #5a5e9e;
+  color: aliceblue;
+}
+.token.btn5, .token.btn6 {
+  background-color: #2a2a2a;
+  color: aliceblue;
+}
 .token:hover, .tokenNoBet:hover {
-  background-color: #407e1e;
+  box-shadow: 0px 0px 10px 0px aliceblue;
   cursor: pointer;
   transform: scale(1.05);
 }
@@ -129,16 +225,26 @@ header {
   display: flex;
   flex-direction: column;
   font-weight: 600;
-  font-size: 1.4rem;
-  max-width: 70px;
-  background-color: #8eff51;
+  font-size: auto;
+  padding: 2px;
+  height: 40px;
+  width: 70px;
+  background-color: #51ffeb;
   border-radius: 8px;
+  transition: .1s ease;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 3px double black;
   transition: .1s ease;
 }
 
 .actions-result {
   display: flex;
-  flex-direction: column;
+  position: relative;
+  
+ 
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: 20px;
@@ -148,45 +254,65 @@ header {
 
 .actions {
   display: flex;
-  flex-direction: column;
+  position: relative;
+  right: 15vw;
+  top: 2vh;
+  flex-direction: row;
+  gap: 10px;
   justify-content: center;
   align-items: center;
   gap: 10px;
 }
-
-.result { 
+.resultContainer {
   display: flex;
   position: fixed;
-  max-width: 250px;
-  left: 70vw;
-  top: 10vh;
+  flex-direction: column;
+  min-width: 600px;
+  min-height: 400px;
+  top: 24vh;
+  left: 30vw;
+  margin: 0;
+  gap: 100px;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-image: radial-gradient(#2baa145d,
-    #0000004e);
-  color: aliceblue;
-  font-size: 2rem;
+  background:#13563b6d;
+  
+  color: #ffffff;
+  box-shadow: 0px 5px 10px 0px #5ca428;
+  font-size: 4rem;
   font-weight: 600;
-  text-decoration: underline;
-  border: 5px double aliceblue;
+  text-decoration: none;
+  border: 5px double #5ca428;
   padding: 20px;
   border-radius: 10px;
   z-index: 1;
 }
 
+
+
 .hand-value {
   display: flex;
-  align-items: center;
+  position: relative;
+  width: 150px;
+  height: 40px;
+  font-size: 1.3rem;
+  top: 1vh;
+  
+  gap: 0px;
+  border-radius: 14px;
   justify-content: center;
-  font-size: 2rem;
-  border: 5px double aliceblue;
+  align-items: center;
+  text-align: center;
+  opacity: 0px;
+  background: #000000;
+  border: 2px double #A46928;
   padding: 15px;
-  border-radius: 10px;
-  margin-top: 10px;
+  box-shadow: 0px 0px 10px 0px #E4A700;
+  color: #E4A700;
 }
 
-.hitStandBtn {
+.hitBtn {
   display: flex;
   position: relative;
   align-items: center;
@@ -195,17 +321,39 @@ header {
   left: 15vw;
   font-size: 1.5rem;
   width: 100px;
-  border: 5px double aliceblue;
+  border: 4px double #E48700;
   border-radius: 10px;
-  background-color: aliceblue;
-  color: black;
-  transition: .3s ease;
+  background: #072457;
+
+  color: #E48700;
+  box-shadow: 0px 0px 8px 0px #E48700;
+
+  transition: .1s ease;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.standBtn {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  left: 15vw;
+  font-size: 1.5rem;
+  width: 100px;
+  border: 4px double #E48700;
+  border-radius: 10px;
+  background: #7B1414;
+
+  color: #E48700;
+  box-shadow: 0px 0px 8px 0px #E48700;
+  transition: .1s ease;
   padding: 10px 20px;
   cursor: pointer;
 }
 
-.disabledBtn {
-  background-color: rgb(84, 80, 80); /* Color when bet is not placed */
+.standBtn:hover, .hitBtn:hover {
+  transform: scale(1.05);
 }
 
 .newGameBtn {
@@ -215,54 +363,31 @@ header {
   justify-content: center;
   margin: 5px;
   margin-top: 15px;
-  left: 10vw;
+  color: aliceblue;
+  box-shadow: 0px 0px 6px 0px #E48700;
   font-size: 1.4rem;
   border: 5px double aliceblue;
   border-radius: 10px;
-  background-color: aliceblue;
-  color: black;
+  
+  background-color: #930606;
   transition: .3s ease;
   padding: 10px 20px;
   cursor: pointer;
 }
 
 .newGameBtn:hover {
-  background-color: rgb(181, 188, 195);
+  background-color: #010c1e;
+  box-shadow: 0px 0px 10px 0px #E48700;
+  color: #E48700;
 }
 
-.current-bet {
-  display: flex;
-  position: fixed;
-  font-size: 2rem;
-  font-weight: 600;
-  border: 5px double aliceblue;
-  
-  padding: 5px;
-  border-radius: 8px;
-  max-width: 150px;
-  bottom: 60vh;
-  right: 80vw;
-}
 
-footer {
-  display: inline-flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-top: 10px;
-  margin-left: 35%;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #ff0000;
-  left: 10vw;
-}
+
 
 @media (max-width: 600px) {
   body {
-    width: 90dvw;
-    height: 90vh;
+    width: 100dvw;
+    height: 100vh;
   }
   .game-board {
     display: flex;
@@ -276,44 +401,56 @@ footer {
     text-align: center;
     border: 3px double aliceblue;
   }
-  h4 {
-    display: flex;
-    font-size: 1rem;
-    font-weight: 600;
-    color: aliceblue;
-    max-width: 200px;
-    text-align: center;
-    border: 2px solid aliceblue;
-    border-radius: 8px;
-    padding: 5px;
-    background-image: radial-gradient(
-    rgba(29, 126, 83, 0.8), rgba(12, 68, 41, 0.8)
-  );
-  }
   .hands {
     display: flex;
     position: fixed;
     left: 0;
-    right: 160px;
-    top: 90px;
+    right: 15vw;
+    top: 20vh;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    gap: 20px;
+    
     z-index: 0;
   }
-  .hand {
+  .handDealer {
     display: flex;
+    position: relative;
+    flex-direction: column;
     font-size: 0.8rem;
-    margin-top: 10px;
+    top: 0;
+    left: 8vw;
     justify-content: center;
     align-items: center;
     text-align: center;
-    gap: 10px;
+    margin: 0;
+    z-index: 0;
+  }
+  .handPlayer {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    font-size: 0.8rem;
+    top: 10vh;
+    right: 8vw;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    z-index: 0;
   }
   .hand-value {
     display: flex;
+    position: relative;
+    width: 140px;
+    height: 40px;
+    
+    gap: 0px;
+    border-radius: 14px;
+    border: 2px double #ff9900;
+    opacity: 0px;
+    background: #000000;
     font-size: 1rem;
     font-weight: 600;
     text-align: center;
@@ -325,17 +462,41 @@ footer {
   }
   .cards {
     display: flex;
-    width: 50px;
-    height: 80px;
+    width: 70px;
+    height: 100px;
+    font-size: 1rem;
     justify-content: center;
     align-items: center;
     text-align: center;
     z-index: 0;
   }
+  .resultContainer {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    min-width: 350px;
+    min-height: 250px;
+    top: 30vh;
+    left: 12vw;
+    margin: 0;
+    gap: 100px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background:#13563b6d;
+    color: #ffffff;
+    box-shadow: 0px 5px 10px 0px #5ca428;
+    font-size: 4rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 5px double #5ca4287f;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1;
+  }
   .actions-result {
     display: flex;
     position: fixed;
-    right: 30px;
     flex-direction: column;
     font-size: 0.8rem;
     z-index: 1;
@@ -343,46 +504,63 @@ footer {
   .actions {
     display: flex;
     position: fixed;
-    flex-direction: column;
+    flex-direction: row;
     font-size: 0.5rem;
     gap: 10px;
-    left: 75vw;
+    top: 42.5vh;
+    right: 42vw;
     
   }
-  .hitStandBtn, .newGameBtn {
+  .hitBtn {
     display: flex;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     padding: 3px;
     margin: 0px;
     gap: 10px;
-    width: 50px;
+    width: 80px;
     height: 50px;
     font-weight: 600;
-    border: 2px solid #232323;
-    left: 1vw;
+    border: 2px double #E48700;
+    color: #ff9900;
+    left:10vw;
   }
- 
+  .standBtn {
+    display: flex;
+    font-size: 1.2rem;
+    padding: 3px;
+    margin: 0px;
+    gap: 10px;
+    width: 80px;
+    height: 50px;
+    font-weight: 600;
+    border: 2px double #E48700;
+    color: #ff9900;
+    left: 10vw;
+  }
   .result {
     display: flex;
     position: fixed;
     background-image: radial-gradient(
-    rgba(29, 126, 83, 0.8), rgba(12, 68, 41, 0.8)
+    rgba(29, 126, 82, 0.462), rgba(12, 68, 41, 0.149)
   );
     color: aliceblue;
-    left: 70vw;
-    top: 20vh;
+    left: 40vw;
+    top: 33vh;
     flex-direction: column;
-    font-size: 1rem;
+    font-size: 2rem;
     gap: 10px;
-    max-width: 80px;
-    
+    max-width: 100px;
+    padding: 12px;
     margin: 0;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     z-index: 1;
   }
-  .result.dealer-result {
+  /* .result.dealer-result {
     display: flex;
     position: fixed;
-    left: 72vw;
+    
     flex-direction: column;
     font-size: 1rem;
     gap: 10px;
@@ -393,8 +571,8 @@ footer {
   .result.player-result {
     display: flex;
     position: fixed;
-    left: 70vw;
-    top: 55vh;
+    
+    
     flex-direction: column;
     font-size: 1rem;
     gap: 10px;
@@ -404,18 +582,18 @@ footer {
   .result.tied-result {
     display: flex;
     position: fixed;
-    left: 70vw;
-    top: 55vh;
+    
     flex-direction: column;
     font-size: 1rem;
     gap: 10px;
     max-width: 80px;
     margin: 0;
-  }
+  } */
   .newGame {
     display: flex;
     position: fixed;
-    left: 70vw;
+    top: 45vh;
+    left: 42vw;
     flex-direction: column;
     font-size: 0.5rem;
     gap: 10px;
@@ -423,22 +601,41 @@ footer {
     padding: 5px;
     margin: 0;
   }
+  .newGameBtn {
+    background-color: #930606;
+    display: flex;
+    font-size: 0.8rem;
+    padding: 3px;
+    margin: 0px;
+    gap: 10px;
+    width: 80px;
+    height: 50px;
+    font-weight: 600;
+    border: 2px solid #E4A700;
+    box-shadow: 0px 0px 10px 0px #E4A700;
+  }
   .betting {
     display: flex;
-    position: relative;
-    right: 4vw;
+    position: fixed;
+    right: 10vw;
+    
     flex-direction: column;
     font-size: 1rem;
     font-weight: 600;
-    padding: 5px;
+    padding: 10px;
     margin-right: 120px;
     max-height: 300px;
-    max-width: 80px;
-    border: 3px double aliceblue;
-    background-image: radial-gradient(
-    rgba(29, 126, 83, 0.8), rgba(12, 68, 41, 0.8)
-  );
+    max-width: 1000px;
+    border: 3px double #E4A700;
+    background-color: #000000;
     z-index: 1;
+  }
+  .tokenButtons {
+    width: 50px;
+    right: 20px;
+  }
+  .placeABet {
+    font-size: 0.6rem;
   }
   .token {
     display: grid;
@@ -449,10 +646,10 @@ footer {
     font-size: 0.9rem;
     max-height: 40px;
     max-width: 40px;
-    border: 3.5px dotted black;
+    border: 3.5px dotted aliceblue;
   }
   .token:hover, .tokenNoBet:hover {
-    background-color: #407e1e;
+    background-color: #999999;
     cursor: pointer;
     transform: scale(1.05);
   }
@@ -462,9 +659,10 @@ footer {
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-size: 0.9rem;
-    max-height: 50px;
-    max-width: 50px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    max-height: 40px;
+    max-width: 40px;
     padding: 2px;
     border-radius: 8px;
   }
@@ -501,18 +699,5 @@ footer {
     bottom: 18vh;
     right: 65vw;
   }
-  footer {
-    display: inline-flex;
-    position: relative;
-    margin: 0;
-    padding: 0;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #ff0000;
-    left: 35vw;
-  }
+  
 }
