@@ -472,30 +472,7 @@ box-shadow: 0px 0px 10px 0px #E4A700;
     text-align: center;
     z-index: 0;
   }
-  .resultContainer {
-    display: flex;
-    position: fixed;
-    flex-direction: column;
-    min-width: 350px;
-    min-height: 250px;
-    top: 30vh;
-    left: 12vw;
-    margin: 0;
-    gap: 100px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background:#13563b6d;
-    color: #ffffff;
-    box-shadow: 0px 5px 10px 0px #5ca428;
-    font-size: 4rem;
-    font-weight: 600;
-    text-decoration: none;
-    border: 5px double #5ca4287f;
-    padding: 20px;
-    border-radius: 10px;
-    z-index: 1;
-  }
+  
   .actions-result {
     display: flex;
     position: fixed;
@@ -510,7 +487,7 @@ box-shadow: 0px 0px 10px 0px #E4A700;
     font-size: 0.5rem;
     gap: 10px;
     top: 40vh;
-    right: 40vw;
+    right: 38vw;
     
   }
   .hitBtn {
@@ -539,15 +516,37 @@ box-shadow: 0px 0px 10px 0px #E4A700;
     color: #ff9900;
     left: 10vw;
   }
+  .resultContainer {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    min-width: 350px;
+    min-height: 250px;
+    top: 26vh;
+    left: 4vw;
+    margin: 0;
+    gap: 100px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background:#13563b6d;
+    color: #ffffff;
+    box-shadow: 0px 5px 10px 0px #5ca428;
+    font-size: 4rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 5px double #5ca4287f;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1;
+  }
   .result {
     display: flex;
     position: fixed;
-    background-image: radial-gradient(
-    rgba(29, 126, 82, 0.462), rgba(12, 68, 41, 0.149)
-  );
+    
     color: aliceblue;
-    left: 40vw;
-    top: 33vh;
+    left: 30vw;
+    top: 30vh;
     flex-direction: column;
     font-size: 2rem;
     gap: 10px;
@@ -563,8 +562,8 @@ box-shadow: 0px 0px 10px 0px #E4A700;
   .newGame {
     display: flex;
     position: fixed;
-    top: 45vh;
-    left: 42vw;
+    top: 42vh;
+    left: 31vw;
     flex-direction: column;
     font-size: 0.5rem;
     gap: 10px;
@@ -573,7 +572,7 @@ box-shadow: 0px 0px 10px 0px #E4A700;
     margin: 0;
   }
   .newGameBtn {
-    background-color: #930606;
+    background-color: #930606a2;
     display: flex;
     font-size: 0.8rem;
     padding: 3px;
