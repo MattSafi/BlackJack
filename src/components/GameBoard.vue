@@ -3,7 +3,7 @@
     <!-- Tokens and Bet Amount -->
     <div class="mobile-betting-toggle">
       <Button @click="toggleMobileBetting" class="mobile-betting-toggle-btn"
-        >Toggle Tokens</Button
+        ><span>Toggle Tokens</span></Button
       >
     </div>
     <div :class="['betting', { active: isBettingActive }]">
@@ -542,8 +542,12 @@ export default {
     border: 4px double #a46928;
     border-radius: 100vw;
     color: #e4a700;
+    filter: drop-shadow(0px 0px 6px #e4a700);
     font-weight: 600;
     transition: 0.1s ease;
+  }
+  .mobile-betting-toggle-btn span {
+    filter: drop-shadow(0px 0px 6px #e4a700);
   }
   .mobile-betting-toggle-btn:hover {
     transform: scale(1.05);
