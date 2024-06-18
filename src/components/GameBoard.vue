@@ -137,7 +137,9 @@
       </div>
 
       <div class="newGame" v-if="gameOver">
-        <Button @click="startNewGame" class="newGameBtn">Play Again</Button>
+        <Button @click="startNewGame" class="new-game-button"
+          >Play Again</Button
+        >
       </div>
     </div>
   </div>
@@ -540,7 +542,7 @@ export default {
   color: aliceblue;
 }
 
-.newGameBtn {
+.new-game-button {
   display: flex;
   position: relative;
   align-items: center;
@@ -558,7 +560,7 @@ export default {
   cursor: pointer;
 }
 
-.newGameBtn:hover {
+.new-game-button:hover {
   background-color: #010c1e;
   box-shadow: 0px 0px 10px 0px #e48700;
   color: #e48700;
