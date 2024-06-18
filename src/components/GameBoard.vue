@@ -266,8 +266,10 @@ export default {
     resolveBet() {
       if (this.resultMessage.includes('You Win!')) {
         this.tokens += this.currentBet * 2; // Double the bet if player wins
+      } else if (this.resultMessage.includes('It\'s a tie!')) {
+        this.tokens += this.currentBet; // Return the bet if it's a tie
       } else if (this.resultMessage.includes('Dealer wins!')) {
-        // No change needed here as tokens are already subtracted when the bet is placed
+        
       }
       this.betPlaced = false;
       this.currentBet = 0; // Reset current bet
