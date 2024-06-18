@@ -6,6 +6,7 @@
         ><span>Toggle Tokens</span></Button
       >
     </div>
+
     <div :class="['betting', { active: isBettingActive }]">
       <div class="tokens-text">
         <span>Tokens</span>
@@ -523,61 +524,12 @@ export default {
   box-shadow: 0px 0px 10px 0px #e4a700;
 }
 
-@media screen and (max-width: 960px) {
-  .mobile-betting-toggle {
-    display: flex;
-    position: absolute;
-    top: 12vh;
-    left: 25px;
-    align-items: center;
-  }
-
-  .mobile-betting-toggle-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 70px;
-    width: 70px;
-    background-color: #000000;
-    border: 4px double #a46928;
-    border-radius: 100vw;
-    color: #e4a700;
-    filter: drop-shadow(0px 0px 6px #e4a700);
-    font-weight: 600;
-    transition: 0.1s ease;
-  }
-  .mobile-betting-toggle-btn span {
-    filter: drop-shadow(0px 0px 6px #e4a700);
-  }
-  .mobile-betting-toggle-btn:hover {
-    transform: scale(1.05);
-    cursor: pointer;
-  }
-
-  .betting {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 216px;
-    min-width: 216px;
-    background-color: #000000;
-    transform: translateX(-100%);
-    transition: all 0.3s ease;
-    z-index: 1000;
-  }
-  .betting.active {
-    transform: translateX(1%);
-  }
-}
-
 .token-buttons-container {
   display: flex;
   flex-direction: column;
-
   border-radius: 10px;
   color: #000000;
   padding: 5px;
-  display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -727,5 +679,76 @@ export default {
 .token-no-bet span {
   position: relative;
   z-index: 2;
+}
+
+@media screen and (max-width: 960px) {
+  .game-board {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+  }
+  .mobile-betting-toggle {
+    display: flex;
+    position: absolute;
+    top: 12vh;
+    left: 25px;
+    align-items: center;
+  }
+
+  .mobile-betting-toggle-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    width: 70px;
+    background-color: #000000;
+    border: 4px double #a46928;
+    border-radius: 16px;
+    color: #e4a700;
+    filter: drop-shadow(0px 0px 6px #e4a700);
+    font-weight: 600;
+    transition: 0.1s ease;
+  }
+  .mobile-betting-toggle-btn span {
+    filter: drop-shadow(0px 0px 6px #e4a700);
+  }
+  .mobile-betting-toggle-btn:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+
+  .betting {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 216px;
+    min-width: 216px;
+    background-color: #000000;
+    transform: translateX(-100%);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  .betting.active {
+    transform: translateX(1%);
+  }
+  .token {
+    height: 50px;
+    width: 50px;
+  }
+  .token::before {
+    width: 35px;
+    height: 35px;
+  }
+  .token-no-bet {
+    font-size: 0.8rem;
+    height: 50px;
+    width: 50px;
+  }
+  .token-no-bet::before {
+    width: 35px;
+    height: 35px;
+  }
 }
 </style>
