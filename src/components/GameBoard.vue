@@ -1,7 +1,12 @@
 <template>
   <div class="game-board">
     <!-- Tokens and Bet Amount -->
-    <div class="betting">
+    <div class="mobile-betting-toggle">
+      <Button @click="toggleMobileBetting" class="mobile-betting-toggle-btn"
+        >Toggle Tokens</Button
+      >
+    </div>
+    <div :class="['betting', { active: isBettingActive }]">
       <div class="tokens-text">
         <span>Tokens</span>
         <span>{{ tokens }}</span>
@@ -11,60 +16,59 @@
         <span>{{ currentBet }}</span>
       </div>
     </div>
-    <div class="mobile-betting-toggle">Toggle button</div>
 
     <!-- Pre-game -->
     <!-- TODO: check vue docs for transition -->
     <!-- <transition> -->
     <div class="token-buttons-container" v-if="!betPlaced">
       <!-- Tokens for betting -->
+      <span v-if="!betPlaced && !gameOver" class="place-a-bet-text"
+        >Place A Bet To Start Playing!</span
+      >
       <div class="token-buttons">
-        <span v-if="!betPlaced && !gameOver" class="place-a-bet-text"
-          >Place A Bet To Start Playing!</span
-        >
-        <Button
-          @click="placeBet(0)"
-          :disabled="0 > tokens || betPlaced || gameOver"
-          class="token-no-bet"
-          >No Bet</Button
-        >
         <Button
           @click="placeBet(50)"
           :disabled="50 > tokens || betPlaced || gameOver"
           class="token btn1"
-          >50</Button
+          ><span>50</span></Button
         >
         <Button
           @click="placeBet(100)"
           :disabled="100 > tokens || betPlaced || gameOver"
           class="token btn2"
-          >100</Button
+          ><span>100</span></Button
         >
         <Button
           @click="placeBet(150)"
           :disabled="150 > tokens || betPlaced || gameOver"
           class="token btn3"
-          >150</Button
+          ><span>150</span></Button
         >
         <Button
           @click="placeBet(200)"
           :disabled="200 > tokens || betPlaced || gameOver"
           class="token btn4"
-          >200</Button
+          ><span>200</span></Button
         >
         <Button
           @click="placeBet(250)"
           :disabled="250 > tokens || betPlaced || gameOver"
           class="token btn5"
-          >250</Button
+          ><span>250</span></Button
         >
         <Button
           @click="placeBet(300)"
           :disabled="300 > tokens || betPlaced || gameOver"
           class="token btn6"
-          >300</Button
+          ><span>300</span></Button
         >
       </div>
+      <Button
+        @click="placeBet(0)"
+        :disabled="0 > tokens || betPlaced || gameOver"
+        class="token-no-bet"
+        ><span>No Bet</span></Button
+      >
     </div>
     <!-- In-game -->
     <div v-else class="main-game-container">
@@ -172,8 +176,6 @@ export default {
   },
   data() {
     return {
-      // TODO: toggle this when click button
-      isBettingInfoVisible: false,
       deck: [],
       playerHand: [],
       dealerHand: [],
@@ -184,6 +186,8 @@ export default {
       tokens: 1000,
       currentBet: 0,
       betPlaced: false,
+      isBettingActive: false,
+      canToggle: true, // Flag to control toggle frequency
     };
   },
   computed: {
@@ -215,6 +219,15 @@ export default {
       }
 
       return deck;
+    },
+    toggleMobileBetting() {
+      if (this.canToggle) {
+        this.isBettingActive = !this.isBettingActive;
+        this.canToggle = false;
+        setTimeout(() => {
+          this.canToggle = true;
+        }, 200); // Set timeout to enable toggling after 200ms
+      }
     },
     startNewGame() {
       if (!this.canStartNewGame) return;
@@ -327,12 +340,14 @@ export default {
       this.currentBet = 0; // Reset current bet
       this.checkTokens();
     },
+
     checkTokens() {
-      if (this.tokens <= 0 && !this.gameOver) {
+      if (this.tokens <= 0 && this.gameOver) {
         alert("You have run out of tokens! Refresh the page to play again.");
       }
     },
   },
+
   mounted() {
     this.deck = this.createDeck();
     this.startNewGame();
@@ -429,6 +444,7 @@ export default {
   height: 100%;
   max-width: 180px;
   aspect-ratio: 3/5;
+  font-size: 2rem;
 }
 
 .actions {
@@ -489,6 +505,7 @@ export default {
   background-color: #13563b;
   border: 4px double #e48700;
   border-radius: 16px;
+  color: aliceblue;
 }
 
 .result-container .modal .score {
@@ -498,48 +515,94 @@ export default {
   justify-content: space-between;
   max-width: 190px;
   font-size: 2rem;
+  background-color: #000000;
+  border: 4px double #a46928;
+  border-radius: 14px;
+  padding: 6px;
+  color: #e4a700;
+  box-shadow: 0px 0px 10px 0px #e4a700;
 }
 
 @media screen and (max-width: 960px) {
   .mobile-betting-toggle {
     display: flex;
-    /* TODO: position it correctly */
+    position: absolute;
+    top: 12vh;
+    left: 25px;
+    align-items: center;
   }
-  /* TODO: put it off screen with a toggle button */
-  /* once you click toggle, slide out the betting container */
+
+  .mobile-betting-toggle-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    width: 70px;
+    background-color: #000000;
+    border: 4px double #a46928;
+    border-radius: 100vw;
+    color: #e4a700;
+    font-weight: 600;
+    transition: 0.1s ease;
+  }
+  .mobile-betting-toggle-btn:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+
   .betting {
-    /* transform: translateX(-110%); */
-    /* opacity: 0.5; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 216px;
+    min-width: 216px;
+    background-color: #000000;
+    transform: translateX(-100%);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  .betting.active {
+    transform: translateX(1%);
   }
 }
 
-/* TODO: token stuff */
-.token-buttons {
+.token-buttons-container {
   display: flex;
   flex-direction: column;
-  /* position: fixed;
-  top: 12vh;
-  right: 15vw; */
+
+  border-radius: 10px;
+  color: #000000;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.token-buttons {
+  display: flex;
+  flex-direction: row;
+
   justify-self: center;
   gap: 10px;
   padding: 15px;
-  color: aliceblue;
+  color: #000000;
   justify-content: center;
   align-items: center;
   text-align: center;
   font-size: 1rem;
-  border: 2px double aliceblue;
+
   border-radius: 12px;
 }
 
 .place-a-bet-text {
   display: flex;
-  font-size: 1rem;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 1.4rem;
   font-weight: 600;
   text-align: center;
   justify-content: center;
   align-items: center;
-  color: aliceblue;
+  color: #e4a700;
 }
 
 .new-game-button {
@@ -549,7 +612,7 @@ export default {
   justify-content: center;
   margin: 5px;
   margin-top: 15px;
-  color: aliceblue;
+  color: #000000;
   box-shadow: 0px 0px 6px 0px #e48700;
   font-size: 1.4rem;
   border: 5px double aliceblue;
@@ -569,58 +632,96 @@ export default {
 .token {
   display: flex;
   font-weight: 600;
-  font-size: auto;
-  border-radius: 50%;
+  font-size: 1rem;
+  font-family: "Courier New", Courier, monospace;
+  border-radius: 100vw;
   padding: 8px;
-  height: 50px;
-  width: 50px;
+  height: 70px;
+  width: 70px;
   text-align: center;
   justify-content: center;
   align-items: center;
-  border: 3px dotted aliceblue;
+  border: 3.5px dashed aliceblue;
+  position: relative;
   transition: 0.1s ease;
+  background-color: currentColor;
+  color: rgb(0, 0, 0);
+}
+
+.token::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: rgb(240, 248, 255);
+  color: rgb(0, 0, 0);
+  z-index: 0;
+}
+
+.token span {
+  position: relative;
+  z-index: 2; /* Ensure text is above the white center */
 }
 
 .token.btn1,
 .token.btn2 {
   background-color: #b2232f;
-  color: aliceblue;
 }
 
 .token.btn3,
 .token.btn4 {
   background-color: #5a5e9e;
-  color: aliceblue;
 }
 
 .token.btn5,
 .token.btn6 {
-  background-color: #2a2a2a;
-  color: aliceblue;
+  background-color: #e4a700;
 }
 
 .token:hover,
 .token-no-bet:hover {
   box-shadow: 0px 0px 10px 0px aliceblue;
   cursor: pointer;
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .token-no-bet {
   display: flex;
-  flex-direction: column;
   font-weight: 600;
-  font-size: auto;
-  padding: 2px;
-  height: 40px;
+  font-size: 1rem;
+  font-family: "Courier New", Courier, monospace;
+  border-radius: 100vw;
+  padding: 8px;
+  height: 70px;
   width: 70px;
-  background-color: #51ffeb;
-  border-radius: 8px;
-  transition: 0.1s ease;
+  text-align: center;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  border: 3px double black;
+  border: 3.5px dashed aliceblue;
+  position: relative;
   transition: 0.1s ease;
+  background-color: #2a2a2a;
+  color: rgb(0, 0, 0);
+}
+.token-no-bet::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: aliceblue;
+  color: rgb(0, 0, 0);
+  z-index: 0;
+}
+.token-no-bet span {
+  position: relative;
+  z-index: 2;
 }
 </style>
