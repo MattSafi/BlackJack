@@ -14,6 +14,8 @@
     <div class="mobile-betting-toggle">Toggle button</div>
 
     <!-- Pre-game -->
+    <!-- TODO: check vue docs for transition -->
+    <!-- <transition> -->
     <div class="token-buttons-container" v-if="!betPlaced">
       <!-- Tokens for betting -->
       <div class="token-buttons">
@@ -388,6 +390,7 @@ export default {
   flex-direction: column;
   gap: 15px;
   flex-grow: 5;
+  width: 100%;
 }
 
 .hands .hand-value {
@@ -406,8 +409,10 @@ export default {
 
 .cards-container {
   display: flex;
+  justify-content: center;
   gap: 10px;
   height: 100%;
+  width: 100%;
 }
 
 .cards-container .card {
