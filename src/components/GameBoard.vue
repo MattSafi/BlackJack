@@ -75,10 +75,10 @@
 
     <div class="resultContainer" v-if="gameOver">
       <span v-if="gameOver && resultMessage.includes('Dealer wins!')" class="result dealer-result">
-        {{ resultMessage }}
+        {{ resultMessage }} 
       </span>
       <span v-if="gameOver && resultMessage.includes('You Win!')" class="result player-result">
-        {{ resultMessage }}
+        {{ resultMessage }} 
       </span>
       <span v-if="gameOver && resultMessage.includes('It\'s a tie!')" 
         class="result tied-result">{{ resultMessage }}
