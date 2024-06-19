@@ -188,7 +188,9 @@ export default {
       currentBet: 0,
       betPlaced: false,
       isBettingActive: false,
-      canToggle: true, // Flag to control toggle frequency
+      canToggle: true, // Flag to control mobile toggle token frequency
+      canEndPlayerTurn: true, // Cool-down flag for end player turn
+      canStartDealerTurn: true, // Cool-down flag for dealer turn
     };
   },
   computed: {
@@ -259,6 +261,39 @@ export default {
         }`
       );
     },
+    async dealerTurn() {
+      if (!this.canStartDealerTurn) return;
+      this.canStartDealerTurn = false;
+      setTimeout(() => (this.canStartDealerTurn = true), 200); // Cool-down period in milliseconds
+
+      console.log("Dealer turn started.");
+      while (this.shouldDealerHit()) {
+        this.dealCard(this.dealerHand);
+        console.log("Dealer dealt a card. Waiting for 1 second...");
+        await this.sleep(1000);
+      }
+      console.log("Dealer's turn finished.");
+      this.finishDealerTurn();
+    },
+    sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    },
+    shouldDealerHit() {
+      const dealerValue = this.calculateHandValue(this.dealerHand);
+      return dealerValue < 17;
+    },
+    async playerTurnEnds() {
+      if (!this.canEndPlayerTurn) return;
+      this.canEndPlayerTurn = false;
+      setTimeout(() => (this.canEndPlayerTurn = true), 200); // Cool-down period in milliseconds
+
+      console.log("Player's turn ended");
+      await this.dealerTurn(); // Ensure this function is called properly
+    },
+    finishDealerTurn() {
+      console.log("Finishing dealer's turn");
+      this.determineWinner();
+    },
     handleHit() {
       if (!this.canHit || !this.betPlaced) return;
       this.canHit = false;
@@ -287,10 +322,7 @@ export default {
       }
 
       console.log("Stand button clicked");
-      while (this.calculateHandValue(this.dealerHand) < 17) {
-        this.dealCard(this.dealerHand);
-      }
-      this.determineWinner();
+      this.playerTurnEnds();
     },
     placeBet(amount) {
       if (amount <= this.tokens && !this.betPlaced && !this.gameOver) {
@@ -304,7 +336,7 @@ export default {
     },
     calculateHandValue(hand) {
       let value = hand.reduce((acc, card) => acc + card.value, 0);
-      let aces = hand.filter((card) => card.rank === "Ace").length;
+      let aces = hand.filter((card) => card.rank === "A").length;
 
       // Adjust for aces
       while (value > 21 && aces > 0) {
@@ -336,7 +368,6 @@ export default {
         this.tokens += this.currentBet * 2; // Double the bet if player wins
       } else if (this.resultMessage.includes("It's a tie!")) {
         this.tokens += this.currentBet; // Return the bet if it's a tie
-      } else if (this.resultMessage.includes("Dealer wins!")) {
       }
       this.currentBet = 0; // Reset current bet
       this.checkTokens();
