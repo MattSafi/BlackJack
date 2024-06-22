@@ -2,9 +2,9 @@
   <div class="game-board">
     <!-- Tokens and Bet Amount -->
     <div class="mobile-betting-toggle">
-      <Button @click="toggleMobileBetting" class="mobile-betting-toggle-btn"
-        ><span>Toggle Tokens</span></Button
-      >
+      <Button @click="toggleMobileBetting" class="mobile-betting-toggle-btn">
+        <span>>></span>
+      </Button>
     </div>
 
     <div :class="['betting', { active: isBettingActive }]">
@@ -19,96 +19,113 @@
     </div>
 
     <!-- Pre-game -->
-    <!-- TODO: check vue docs for transition -->
-    <!-- <transition> -->
-    <div class="token-buttons-container" v-if="!betPlaced">
-      <!-- Tokens for betting -->
-      <span v-if="!betPlaced && !gameOver" class="place-a-bet-text"
-        >Place A Bet To Start Playing!</span
-      >
-      <div class="token-buttons">
-        <Button
-          @click="placeBet(50)"
-          :disabled="50 > tokens || betPlaced || gameOver"
-          class="token btn1"
-          ><span>50</span></Button
-        >
-        <Button
-          @click="placeBet(100)"
-          :disabled="100 > tokens || betPlaced || gameOver"
-          class="token btn2"
-          ><span>100</span></Button
-        >
-        <Button
-          @click="placeBet(150)"
-          :disabled="150 > tokens || betPlaced || gameOver"
-          class="token btn3"
-          ><span>150</span></Button
-        >
-        <Button
-          @click="placeBet(200)"
-          :disabled="200 > tokens || betPlaced || gameOver"
-          class="token btn4"
-          ><span>200</span></Button
-        >
-        <Button
-          @click="placeBet(250)"
-          :disabled="250 > tokens || betPlaced || gameOver"
-          class="token btn5"
-          ><span>250</span></Button
-        >
-        <Button
-          @click="placeBet(300)"
-          :disabled="300 > tokens || betPlaced || gameOver"
-          class="token btn6"
-          ><span>300</span></Button
+    <transition>
+      <div class="token-buttons-container" v-if="!betPlaced">
+        <!-- Tokens for betting -->
+        <span v-if="!betPlaced && !gameOver" class="place-a-bet-text">
+          Place A Bet To Start Playing!
+        </span>
+        <div class="token-buttons">
+          <Button
+            @click="placeBet(50)"
+            :disabled="50 > tokens || betPlaced || gameOver"
+            :class="{ 'disabled-token': amount > tokens }"
+            class="token btn1"
+            ><span>50</span></Button
+          >
+          <Button
+            @click="placeBet(100)"
+            :disabled="100 > tokens || betPlaced || gameOver"
+            :class="{ 'disabled-token': amount > tokens }"
+            class="token btn2"
+            ><span>100</span></Button
+          >
+          <Button
+            @click="placeBet(150)"
+            :disabled="150 > tokens || betPlaced || gameOver"
+            :class="{ 'disabled-token': amount > tokens }"
+            class="token btn3"
+            ><span>150</span></Button
+          >
+          <Button
+            @click="placeBet(200)"
+            :disabled="200 > tokens || betPlaced || gameOver"
+            :class="{ 'disabled-token': amount > tokens }"
+            class="token btn4"
+            ><span>200</span></Button
+          >
+          <Button
+            @click="placeBet(250)"
+            :disabled="250 > tokens || betPlaced || gameOver"
+            :class="{ 'disabled-token': amount > tokens }"
+            class="token btn5"
+            ><span>250</span></Button
+          >
+          <Button
+            @click="placeBet(300)"
+            class="token btn6"
+            :class="{ 'disabled-token': amount > tokens }"
+            ><span>300</span></Button
+          >
+        </div>
+        <Button @click="placeBet(0)" class="token-no-bet"
+          ><span>No Bet</span></Button
         >
       </div>
-      <Button
-        @click="placeBet(0)"
-        :disabled="0 > tokens || betPlaced || gameOver"
-        class="token-no-bet"
-        ><span>No Bet</span></Button
-      >
-    </div>
+    </transition>
+
     <!-- In-game -->
-    <div v-else class="main-game-container">
-      <!-- Dealer's hand -->
-      <div class="hands">
-        <div class="cards-container">
-          <div v-for="(card, index) in dealerHand" :key="index" class="card">
-            <span>{{ card.rank }} {{ card.suit }}</span>
+    <transition>
+      <div v-if="betPlaced" class="main-game-container">
+        <!-- Dealer's hand -->
+        <div class="hands">
+          <div class="cards-container">
+            <div v-for="(card, index) in dealerHand" :key="index" class="card">
+              <span>{{ card.rank }} {{ card.suit }}</span>
+            </div>
+          </div>
+          <div class="hand-value">
+            <span>Dealer</span>
+            <span>{{ dealerHandValue }}</span>
           </div>
         </div>
-        <div class="hand-value">
-          <span>Dealer</span>
-          <span>{{ dealerHandValue }}</span>
-        </div>
-      </div>
 
-      <!-- Hit and Stand Buttons -->
-      <div class="actions">
-        <Button @click="handleHit" :disabled="gameOver" class="hit-button">
-          Hit
-        </Button>
-        <Button @click="handleStand" :disabled="gameOver" class="stand-button">
-          Stand
-        </Button>
-      </div>
-
-      <!-- Player's hand -->
-      <div class="hands">
-        <div class="hand-value">
-          <span>Player</span>
-          <span>{{ playerHandValue }}</span>
+        <!-- Hit and Stand Buttons -->
+        <div class="actions">
+          <Button @click="handleHit" :disabled="gameOver" class="hit-button">
+            Hit
+          </Button>
+          <Button
+            @click="handleStand"
+            :disabled="gameOver"
+            class="stand-button"
+          >
+            Stand
+          </Button>
+          <Button
+            v-if="canSplit"
+            @click="handleSplit"
+            :disabled="gameOver || !canSplit"
+            class="split-button"
+          >
+            Split
+          </Button>
         </div>
-        <div class="cards-container">
-          <div v-for="(card, index) in playerHand" :key="index" class="card">
-            <span>{{ card.rank }} {{ card.suit }}</span>
+
+        <!-- Player's hand -->
+        <div class="hands">
+          <div class="hand-value">
+            <span>Player</span>
+            <span>{{ playerHandValue }}</span>
+          </div>
+          <div class="cards-container">
+            <div v-for="(card, index) in playerHand" :key="index" class="card">
+              <span>{{ card.rank }} {{ card.suit }}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 
   <!-- Results popup -->
@@ -129,8 +146,11 @@
       <span
         v-if="gameOver && resultMessage.includes('It\'s a tie!')"
         class="result tied-result"
-        >{{ resultMessage }}
-      </span>
+        >{{ resultMessage }}</span
+      >
+      <span v-if="tokens <= 0" class="refresh-tokens"
+        >You've run out of tokens <br />Refresh to play again</span
+      >
 
       <div class="score">
         <span>Dealer</span>
@@ -142,9 +162,13 @@
       </div>
 
       <div class="newGame" v-if="gameOver">
-        <Button @click="startNewGame" class="new-game-button"
-          >Play Again</Button
+        <Button
+          @click="startNewGame"
+          :class="newGameButtonClass"
+          class="new-game-button"
         >
+          Play Again
+        </Button>
       </div>
     </div>
   </div>
@@ -191,6 +215,7 @@ export default {
       canToggle: true, // Flag to control mobile toggle token frequency
       canEndPlayerTurn: true, // Cool-down flag for end player turn
       canStartDealerTurn: true, // Cool-down flag for dealer turn
+      currentHandIndex: 0,
     };
   },
   computed: {
@@ -200,7 +225,19 @@ export default {
     dealerHandValue() {
       return this.calculateHandValue(this.dealerHand);
     },
+
+    newGameButtonClass() {
+      if (this.resultMessage.includes("You Win!")) {
+        return "player-wins";
+      } else if (this.resultMessage.includes("Dealer wins!")) {
+        return "dealer-wins";
+      } else if (this.resultMessage.includes("It's a tie!")) {
+        return "tie-game";
+      }
+      return "";
+    },
   },
+
   methods: {
     createDeck() {
       console.log("Creating deck");
@@ -270,7 +307,7 @@ export default {
       while (this.shouldDealerHit()) {
         this.dealCard(this.dealerHand);
         console.log("Dealer dealt a card. Waiting for 1 second...");
-        await this.sleep(1000);
+        await this.sleep(800);
       }
       console.log("Dealer's turn finished.");
       this.finishDealerTurn();
@@ -334,6 +371,16 @@ export default {
         this.checkTokens();
       }
     },
+    handleSplit() {
+      if (this.canSplit) {
+        this.tokens -= this.currentBet;
+        const firstCard = this.playerHands[0].pop();
+        this.playerHands.push([firstCard]);
+        this.dealCard(this.playerHands[0]);
+        this.dealCard(this.playerHands[1]);
+        console.log("Player hand split into two hands:", this.playerHands);
+      }
+    },
     calculateHandValue(hand) {
       let value = hand.reduce((acc, card) => acc + card.value, 0);
       let aces = hand.filter((card) => card.rank === "A").length;
@@ -375,7 +422,7 @@ export default {
 
     checkTokens() {
       if (this.tokens <= 0 && this.gameOver) {
-        alert("You have run out of tokens! Refresh the page to play again.");
+        alert("You have run out of tokens!");
       }
     },
   },
@@ -388,6 +435,16 @@ export default {
 </script>
 
 <style scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 .game-board {
   display: flex;
   align-items: center;
@@ -506,6 +563,15 @@ export default {
 .actions .stand-button {
   background: #7b1414;
 }
+.actions .split-button {
+  display: flex;
+  margin: 5px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: lightblue;
+}
 
 .stand-button:hover,
 .hit-button:hover {
@@ -555,6 +621,67 @@ export default {
   box-shadow: 0px 0px 10px 0px #e4a700;
 }
 
+.new-game-button {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  margin-top: 15px;
+  color: #000000;
+  box-shadow: 0px 0px 6px 0px #e48700;
+  font-size: 1.4rem;
+  border: 5px double aliceblue;
+  border-radius: 10px;
+  transition: 0.3s ease;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.new-game-button.player-wins {
+  background-color: limegreen;
+}
+.new-game-button.player-wins:hover {
+  background-color: rgb(29, 118, 29);
+}
+.new-game-button.dealer-wins {
+  background-color: red;
+}
+.new-game-button.dealer-wins:hover {
+  background-color: rgb(173, 16, 16);
+}
+
+.new-game-button.tie-game {
+  background-color: yellow;
+  border: 5px double #000000;
+}
+.new-game-button.tie-game:hover {
+  background-color: rgb(165, 165, 0);
+}
+.refresh-tokens {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1.4rem;
+}
+.refresh-tokens-button {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  margin-top: 15px;
+  color: #000000;
+  box-shadow: 0px 0px 6px 0px #e48700;
+  font-size: 1rem;
+  border: 5px double aliceblue;
+  border-radius: 10px;
+  transition: 0.3s ease;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
 .token-buttons-container {
   display: flex;
   flex-direction: column;
@@ -590,30 +717,6 @@ export default {
   justify-content: center;
   align-items: center;
   color: #e4a700;
-}
-
-.new-game-button {
-  display: flex;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  margin: 5px;
-  margin-top: 15px;
-  color: #000000;
-  box-shadow: 0px 0px 6px 0px #e48700;
-  font-size: 1.4rem;
-  border: 5px double aliceblue;
-  border-radius: 10px;
-  background-color: #930606;
-  transition: 0.3s ease;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.new-game-button:hover {
-  background-color: #010c1e;
-  box-shadow: 0px 0px 10px 0px #e48700;
-  color: #e48700;
 }
 
 .token {
@@ -711,6 +814,11 @@ export default {
   position: relative;
   z-index: 2;
 }
+.disabled-token {
+  background-color: grey;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 
 @media screen and (max-width: 960px) {
   .game-board {
@@ -724,7 +832,7 @@ export default {
     display: flex;
     position: absolute;
     top: 12vh;
-    left: 25px;
+    left: 5px;
     align-items: center;
   }
 
@@ -732,22 +840,25 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 70px;
-    width: 70px;
-    background-color: #000000;
-    border: 4px double #a46928;
-    border-radius: 16px;
+    text-align: center;
+    height: 35px;
+    width: 35px;
+    background-color: #e4a700af;
+    border: 5px double #000000;
+    border-radius: 8px;
     color: #e4a700;
     filter: drop-shadow(0px 0px 6px #e4a700);
     font-weight: 600;
     transition: 0.1s ease;
+    cursor: pointer;
   }
   .mobile-betting-toggle-btn span {
     filter: drop-shadow(0px 0px 6px #e4a700);
-  }
-  .mobile-betting-toggle-btn:hover {
-    transform: scale(1.05);
-    cursor: pointer;
+    color: #000000;
+    font-size: 1.1rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
   .betting {
@@ -767,11 +878,13 @@ export default {
   .token {
     height: 50px;
     width: 50px;
+    cursor: pointer;
   }
   .token::before {
     width: 35px;
     height: 35px;
   }
+
   .token-no-bet {
     font-size: 0.8rem;
     height: 50px;
@@ -780,6 +893,18 @@ export default {
   .token-no-bet::before {
     width: 35px;
     height: 35px;
+  }
+  .cards-container {
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+  .cards-container .card {
+    height: 160px;
+    width: 95px;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
   }
 }
 </style>
