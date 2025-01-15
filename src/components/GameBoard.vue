@@ -3,7 +3,7 @@
     <!-- Tokens and Bet Amount -->
     <div class="mobile-betting-toggle">
       <Button @click="toggleMobileBetting" class="mobile-betting-toggle-btn">
-        <span>>></span>
+        <span>&#9824;</span>
       </Button>
     </div>
 
@@ -19,113 +19,77 @@
     </div>
 
     <!-- Pre-game -->
-    <transition>
-      <div class="token-buttons-container" v-if="!betPlaced">
-        <!-- Tokens for betting -->
-        <span v-if="!betPlaced && !gameOver" class="place-a-bet-text">
-          Place A Bet To Start Playing!
-        </span>
-        <div class="token-buttons">
-          <Button
-            @click="placeBet(50)"
-            :disabled="50 > tokens || betPlaced || gameOver"
-            :class="{ 'disabled-token': amount > tokens }"
-            class="token btn1"
-            ><span>50</span></Button
-          >
-          <Button
-            @click="placeBet(100)"
-            :disabled="100 > tokens || betPlaced || gameOver"
-            :class="{ 'disabled-token': amount > tokens }"
-            class="token btn2"
-            ><span>100</span></Button
-          >
-          <Button
-            @click="placeBet(150)"
-            :disabled="150 > tokens || betPlaced || gameOver"
-            :class="{ 'disabled-token': amount > tokens }"
-            class="token btn3"
-            ><span>150</span></Button
-          >
-          <Button
-            @click="placeBet(200)"
-            :disabled="200 > tokens || betPlaced || gameOver"
-            :class="{ 'disabled-token': amount > tokens }"
-            class="token btn4"
-            ><span>200</span></Button
-          >
-          <Button
-            @click="placeBet(250)"
-            :disabled="250 > tokens || betPlaced || gameOver"
-            :class="{ 'disabled-token': amount > tokens }"
-            class="token btn5"
-            ><span>250</span></Button
-          >
-          <Button
-            @click="placeBet(300)"
-            class="token btn6"
-            :class="{ 'disabled-token': amount > tokens }"
-            ><span>300</span></Button
-          >
-        </div>
-        <Button @click="placeBet(0)" class="token-no-bet"
-          ><span>No Bet</span></Button
+
+    <div class="token-buttons-container" v-if="!betPlaced">
+      <span v-if="!betPlaced && !gameOver" class="place-a-bet-text">
+        Place A Bet To Start Playing!
+      </span>
+      <div class="token-buttons">
+        <Button
+          v-for="amount in [
+            50, 100, 150, 200, 250, 300, 400, 450, 500, 1000, 1500, 2000,
+          ]"
+          :key="amount"
+          @click="placeBet(amount)"
+          :disabled="amount > tokens || betPlaced || gameOver"
+          :class="{
+            token: true,
+            'disabled-token': amount > tokens || betPlaced || gameOver,
+          }"
+          :style="{ backgroundColor: getBackgroundColor(amount) }"
         >
+          <span>{{ amount }}</span>
+        </Button>
       </div>
-    </transition>
+    </div>
 
     <!-- In-game -->
-    <transition>
-      <div v-if="betPlaced" class="main-game-container">
-        <!-- Dealer's hand -->
-        <div class="hands">
-          <div class="cards-container">
-            <div v-for="(card, index) in dealerHand" :key="index" class="card">
-              <span>{{ card.rank }} {{ card.suit }}</span>
-            </div>
-          </div>
-          <div class="hand-value">
-            <span>Dealer</span>
-            <span>{{ dealerHandValue }}</span>
+
+    <div v-if="betPlaced" class="main-game-container">
+      <!-- Dealer's hand -->
+      <div class="hands">
+        <div class="cards-container">
+          <div v-for="(card, index) in dealerHand" :key="index" class="card">
+            <span>{{ card.rank }} {{ card.suit }}</span>
           </div>
         </div>
-
-        <!-- Hit and Stand Buttons -->
-        <div class="actions">
-          <Button @click="handleHit" :disabled="gameOver" class="hit-button">
-            Hit
-          </Button>
-          <Button
-            @click="handleStand"
-            :disabled="gameOver"
-            class="stand-button"
-          >
-            Stand
-          </Button>
-          <Button
-            v-if="canSplit"
-            @click="handleSplit"
-            :disabled="gameOver || !canSplit"
-            class="split-button"
-          >
-            Split
-          </Button>
+        <div class="hand-value">
+          <span>Dealer</span>
+          <span>{{ dealerHandValue }}</span>
         </div>
+      </div>
 
-        <!-- Player's hand -->
-        <div class="hands">
-          <div class="hand-value">
-            <span>Player</span>
-            <span>{{ playerHandValue }}</span>
-          </div>
-          <div class="cards-container">
-            <div v-for="(card, index) in playerHand" :key="index" class="card">
-              <span>{{ card.rank }} {{ card.suit }}</span>
-            </div>
+      <!-- Hit and Stand Buttons -->
+      <div class="actions">
+        <Button @click="handleHit" :disabled="gameOver" class="hit-button">
+          Hit
+        </Button>
+        <Button @click="handleStand" :disabled="gameOver" class="stand-button">
+          Stand
+        </Button>
+        <Button
+          v-if="canSplit"
+          @click="handleSplit"
+          :disabled="gameOver || !canSplit"
+          class="split-button"
+        >
+          Split
+        </Button>
+      </div>
+
+      <!-- Player's hand -->
+      <div class="hands">
+        <div class="hand-value">
+          <span>Player</span>
+          <span>{{ playerHandValue }}</span>
+        </div>
+        <div class="cards-container">
+          <div v-for="(card, index) in playerHand" :key="index" class="card">
+            <span>{{ card.rank }} {{ card.suit }}</span>
           </div>
         </div>
       </div>
-    </transition>
+    </div>
   </div>
 
   <!-- Results popup -->
@@ -149,7 +113,12 @@
         >{{ resultMessage }}</span
       >
       <span v-if="tokens <= 0" class="refresh-tokens"
-        >You've run out of tokens <br />Refresh to play again</span
+        >You&apos;ve run out of tokens<button
+          class="refresh-tokens-button"
+          @click="refreshTokens()"
+        >
+          Refresh Tokens
+        </button></span
       >
 
       <div class="score">
@@ -208,10 +177,10 @@ export default {
       resultMessage: "",
       canHit: true, // Cool-down flag for hit
       canStartNewGame: true, // Cool-down flag for new game
-      tokens: 1000,
+      tokens: 2000,
       currentBet: 0,
       betPlaced: false,
-      isBettingActive: false,
+      isBettingActive: true,
       canToggle: true, // Flag to control mobile toggle token frequency
       canEndPlayerTurn: true, // Cool-down flag for end player turn
       canStartDealerTurn: true, // Cool-down flag for dealer turn
@@ -368,8 +337,24 @@ export default {
         this.betPlaced = true;
         console.log(`Bet placed: ${amount} tokens`);
         this.dealInitialCards(); // Deal cards after bet is placed
-        this.checkTokens();
       }
+    },
+    getBackgroundColor(amount) {
+      const colors = {
+        50: "#b2232f",
+        100: "#b2232f",
+        150: "#5a5e9e",
+        200: "#5a5e9e",
+        250: "#000000",
+        300: "#000000",
+        400: "#0066ff",
+        450: "#0066ff",
+        500: "#e4a700",
+        1000: "#e4a700",
+        1500: "#a200ff",
+        2000: "#a200ff",
+      };
+      return colors[amount] || "#ffffff"; // Default color if not found
     },
     handleSplit() {
       if (this.canSplit) {
@@ -417,13 +402,10 @@ export default {
         this.tokens += this.currentBet; // Return the bet if it's a tie
       }
       this.currentBet = 0; // Reset current bet
-      this.checkTokens();
     },
 
-    checkTokens() {
-      if (this.tokens <= 0 && this.gameOver) {
-        alert("You have run out of tokens!");
-      }
+    refreshTokens() {
+      location.reload();
     },
   },
 
@@ -435,22 +417,12 @@ export default {
 </script>
 
 <style scoped>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-
 .game-board {
   display: flex;
   align-items: center;
   justify-content: center;
   color: aliceblue;
-  background-image: radial-gradient(#1d7e53, #0c4429);
+  background-image: radial-gradient(#1d7e53, #0e3b26);
   font-size: 1.5rem;
   width: 100vw;
   height: 100vh;
@@ -554,7 +526,7 @@ export default {
   box-shadow: 0px 0px 8px 0px #e48700;
   padding: 15px 20px;
   cursor: pointer;
-  transition: transform 200ms ease;
+  transition: transform 100ms ease;
 }
 
 .actions .hit-button {
@@ -660,6 +632,7 @@ export default {
 }
 .refresh-tokens {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
@@ -669,17 +642,20 @@ export default {
   display: flex;
   position: relative;
   align-items: center;
+  margin-bottom: 5px;
   justify-content: center;
-  margin: 5px;
-  margin-top: 15px;
-  color: #000000;
-  box-shadow: 0px 0px 6px 0px #e48700;
+  background-color: #000000;
+  color: aliceblue;
+  box-shadow: 0 0 2px 1px #e48700;
   font-size: 1rem;
-  border: 5px double aliceblue;
+  border: 2px solid aliceblue;
   border-radius: 10px;
-  transition: 0.3s ease;
-  padding: 10px 20px;
+  transition: 0.1s ease;
+  padding: 8px;
   cursor: pointer;
+}
+.refresh-tokens-button:hover {
+  transform: scale(1.01);
 }
 
 .token-buttons-container {
@@ -736,6 +712,7 @@ export default {
   transition: 0.1s ease;
   background-color: currentColor;
   color: rgb(0, 0, 0);
+  background-color: #e4a700;
 }
 
 .token::before {
@@ -815,9 +792,7 @@ export default {
   z-index: 2;
 }
 .disabled-token {
-  background-color: grey;
-  cursor: not-allowed;
-  opacity: 0.5;
+  display: none;
 }
 
 @media screen and (max-width: 960px) {
@@ -839,8 +814,7 @@ export default {
   .mobile-betting-toggle-btn {
     display: flex;
     justify-content: center;
-    align-items: center;
-    text-align: center;
+    margin: 0;
     height: 35px;
     width: 35px;
     background-color: #e4a700af;
@@ -848,17 +822,18 @@ export default {
     border-radius: 8px;
     color: #e4a700;
     filter: drop-shadow(0px 0px 6px #e4a700);
-    font-weight: 600;
     transition: 0.1s ease;
     cursor: pointer;
   }
   .mobile-betting-toggle-btn span {
     filter: drop-shadow(0px 0px 6px #e4a700);
     color: #000000;
-    font-size: 1.1rem;
+    font-size: 1.8rem;
     justify-content: center;
-    align-items: center;
-    text-align: center;
+    align-self: center;
+  }
+  .mobile-betting-toggle-btn:hover {
+    transform: scale(1.01);
   }
 
   .betting {
@@ -875,6 +850,13 @@ export default {
   .betting.active {
     transform: translateX(1%);
   }
+  .token-buttons-container {
+    display: flex;
+  }
+  .token-buttons {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+  }
   .token {
     height: 50px;
     width: 50px;
@@ -883,12 +865,6 @@ export default {
   .token::before {
     width: 35px;
     height: 35px;
-  }
-
-  .token-no-bet {
-    font-size: 0.8rem;
-    height: 50px;
-    width: 50px;
   }
   .token-no-bet::before {
     width: 35px;
