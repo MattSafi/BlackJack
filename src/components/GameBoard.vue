@@ -18,6 +18,40 @@
       </div>
     </div>
 
+    <!-- Modal -->
+
+    <div>
+      <button @click="openModal" class="modal-button">How To Play</button>
+
+      <Modal :isVisible="isModalVisible" @close="closeModal">
+        <h2>
+          &#9758; <u><strong>How to play BlackJack</strong></u> &#9756;
+        </h2>
+        <p>
+          &#9824; <u><strong>Goal:</strong></u> Try to get a hand value as close
+          to 21 as possible without going over, and have a higher total than the
+          dealer.<br />
+          &#9752; <u><strong>Card Values:</strong></u> <br />Number cards
+          (2-10): Worth the same as their number. <br />
+          Face cards (Jack, Queen, King): Worth 10 points each. <br />Aces: Can
+          be worth 1 or 11 points, depending on which is better for your hand.
+          <br />
+          &#9829; Players decide to either "<u><strong>Hit</strong></u
+          >" (take another card) or "<u><strong>Stand</strong></u
+          >" (keep current hand).<br />
+          &#9830; The dealer must hit until their hand totals 17 or more.
+          <br />
+          &#9827; <u><strong>Winning:</strong></u> <br />A player wins by having
+          a hand total closer to 21 than the dealer's or if the dealer's hand
+          exceeds 21 ("busts"). A "Blackjack" (Ace + 10-point card) wins
+          automatically if not matched by the dealer. <br />
+          &#9827; <u><strong>Losing:</strong></u> <br />Exceeding 21 ("bust") or
+          having a lower total than the dealer without the dealer busting.
+        </p>
+        <button @click="closeModal" class="modal-close-button">Close</button>
+      </Modal>
+    </div>
+
     <!-- Pre-game -->
 
     <div class="token-buttons-container" v-if="!betPlaced">
@@ -67,14 +101,14 @@
         <Button @click="handleStand" :disabled="gameOver" class="stand-button">
           Stand
         </Button>
-        <Button
+        <!-- <Button
           v-if="canSplit"
           @click="handleSplit"
           :disabled="gameOver || !canSplit"
           class="split-button"
         >
           Split
-        </Button>
+        </Button> -->
       </div>
 
       <!-- Player's hand -->
@@ -130,7 +164,7 @@
         <span>{{ playerHandValue }}</span>
       </div>
 
-      <div class="newGame" v-if="gameOver">
+      <div class="newGame" v-if="gameOver && tokens > 0">
         <Button
           @click="startNewGame"
           :class="newGameButtonClass"
@@ -145,6 +179,7 @@
 
 <script>
 import Button from "./Button.vue";
+import Modal from "./Modal.vue";
 
 const suits = ["♥", "♦", "♣", "♠"];
 const ranks = [
@@ -167,6 +202,7 @@ export default {
   name: "GameBoard",
   components: {
     Button,
+    Modal,
   },
   data() {
     return {
@@ -185,6 +221,7 @@ export default {
       canEndPlayerTurn: true, // Cool-down flag for end player turn
       canStartDealerTurn: true, // Cool-down flag for dealer turn
       currentHandIndex: 0,
+      isModalVisible: false,
     };
   },
   computed: {
@@ -407,6 +444,12 @@ export default {
     refreshTokens() {
       location.reload();
     },
+    openModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
   },
 
   mounted() {
@@ -460,6 +503,32 @@ export default {
 
 .mobile-betting-toggle {
   display: none;
+}
+
+.modal-button {
+  display: flex;
+  position: fixed;
+  top: 8px;
+  right: 15px;
+  justify-items: center;
+  background-color: #fffb00;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.modal-button:hover,
+.modal-close-button:hover {
+  transform: scale(1.05);
+}
+
+.modal-close-button {
+  display: flex;
+  justify-self: center;
+  background-color: #fffb00;
+  margin-top: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .hands {
@@ -620,7 +689,7 @@ export default {
   background-color: red;
 }
 .new-game-button.dealer-wins:hover {
-  background-color: rgb(173, 16, 16);
+  background-color: #ad1010;
 }
 
 .new-game-button.tie-game {
@@ -642,20 +711,20 @@ export default {
   display: flex;
   position: relative;
   align-items: center;
-  margin-bottom: 5px;
   justify-content: center;
-  background-color: #000000;
+  background-color: #ad1010;
   color: aliceblue;
-  box-shadow: 0 0 2px 1px #e48700;
+  text-shadow: 0 0 8px 0px #f0f8ff;
+  box-shadow: 0 0 8px 0px #f0f8ff;
   font-size: 1rem;
   border: 2px solid aliceblue;
   border-radius: 10px;
   transition: 0.1s ease;
-  padding: 8px;
+  padding: 10px;
   cursor: pointer;
 }
 .refresh-tokens-button:hover {
-  transform: scale(1.01);
+  transform: scale(1.05);
 }
 
 .token-buttons-container {
@@ -836,6 +905,15 @@ export default {
     transform: scale(1.01);
   }
 
+  .modal-close-button {
+    display: flex;
+    justify-self: center;
+    background-color: #fffb00;
+    margin-top: 12px;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
   .betting {
     position: fixed;
     top: 0;
