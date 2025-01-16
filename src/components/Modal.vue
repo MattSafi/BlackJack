@@ -72,7 +72,7 @@ export default {
     border-radius: 8px;
     position: relative;
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 25px;
   }
 }

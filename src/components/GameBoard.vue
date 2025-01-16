@@ -61,7 +61,8 @@
       <div class="token-buttons">
         <Button
           v-for="amount in [
-            50, 100, 150, 200, 250, 300, 400, 450, 500, 1000, 1500, 2000,
+            50, 100, 200, 300, 400, 500, 600, 700, 800, 1000, 1500, 2000, 3000,
+            4000, 5000, 6000,
           ]"
           :key="amount"
           @click="placeBet(amount)"
@@ -213,7 +214,7 @@ export default {
       resultMessage: "",
       canHit: true, // Cool-down flag for hit
       canStartNewGame: true, // Cool-down flag for new game
-      tokens: 2000,
+      tokens: 500,
       currentBet: 0,
       betPlaced: false,
       isBettingActive: true,
@@ -380,16 +381,20 @@ export default {
       const colors = {
         50: "#b2232f",
         100: "#b2232f",
-        150: "#5a5e9e",
         200: "#5a5e9e",
-        250: "#000000",
-        300: "#000000",
-        400: "#0066ff",
-        450: "#0066ff",
-        500: "#e4a700",
+        300: "#5a5e9e",
+        400: "#000000",
+        500: "#000000",
+        600: "#0066ff",
+        700: "#0066ff",
+        800: "#e4a700",
         1000: "#e4a700",
         1500: "#a200ff",
         2000: "#a200ff",
+        3000: "#ff0000",
+        4000: "#ff0000",
+        5000: "#00ff80",
+        6000: "#00ff80",
       };
       return colors[amount] || "#ffffff"; // Default color if not found
     },
