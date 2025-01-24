@@ -152,7 +152,10 @@
           class="refresh-tokens-button"
           @click="refreshTokens()"
         >
-          Refresh Tokens
+          Refresh 500 Tokens
+        </button>
+        <button class="refresh-tokens-button" @click="refreshTokens1000()">
+          Refresh 1000 Tokens
         </button></span
       >
 
@@ -447,7 +450,10 @@ export default {
     },
 
     refreshTokens() {
-      location.reload();
+      this.tokens = 500;
+    },
+    refreshTokens1000() {
+      this.tokens = 1000;
     },
     openModal() {
       this.isModalVisible = true;
@@ -719,6 +725,7 @@ export default {
   justify-content: center;
   background-color: #ad1010;
   color: aliceblue;
+  max-width: 150px;
   text-shadow: 0 0 8px 0px #f0f8ff;
   box-shadow: 0 0 8px 0px #f0f8ff;
   font-size: 1rem;

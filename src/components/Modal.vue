@@ -50,6 +50,7 @@ export default {
   background: rgba(0, 0, 0, 0.85);
   padding: 20px;
   width: 80vw;
+  border: 4px double #f0f8ff80;
   border-radius: 8px;
   position: relative;
   text-align: justify;
