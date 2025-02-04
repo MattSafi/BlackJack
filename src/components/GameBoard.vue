@@ -960,6 +960,12 @@ export default {
     width: 35px;
     height: 35px;
   }
+
+  .refresh-tokens {
+    display: flex;
+    flex-direction: row;
+  }
+
   .cards-container {
     justify-content: center;
     align-items: center;
